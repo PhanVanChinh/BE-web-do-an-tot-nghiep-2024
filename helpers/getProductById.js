@@ -1,8 +1,6 @@
-const productModel = require('../models/productModel')
-
 const getProductById = async (req, res) => {
     try {
-        const productId = req.body.productId; // Lấy ID sản phẩm từ request body
+        const productId = req.params.productId; // Lấy ID sản phẩm từ URL params
         const product = await productModel.findById(productId); // Tìm sản phẩm trong database dựa trên ID
         if (!product) {
             return res.status(404).json({
