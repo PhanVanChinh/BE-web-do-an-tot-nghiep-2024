@@ -84,4 +84,39 @@ router.post('/delete-address-delivery', authToken, deleteAddress);
 router.post("/update-address-delivery", authToken, updateAddress);
 router.post('/get-address-by-id', authToken, getAddressById);
 
+// Import Order
+const uploadImportOrder = require('../controller/importOrder/uploadImportOrder')
+const getImportOrder = require('../controller/importOrder/getImportOrder')
+const deleteImportOrder = require('../controller/importOrder/deleteImportOrder')
+const checkPasswordImportOrder = require('../controller/importOrder/checkPasswordImportOrder ')
+const updateImportOrder = require('../controller/importOrder/updateImportOrder')
+
+
+router.post("/upload-importOrder",authToken,uploadImportOrder)
+router.get('/get-importOrder', authToken,getImportOrder)
+
+router.post('/delete-importOrder', deleteImportOrder)
+router.post('/check-password-import-order', checkPasswordImportOrder)
+router.post('/update-importOrder', updateImportOrder)
+
+
+
+
+
+// Supplier
+const UploadSupplierController = require('../controller/supplier/uploadSupplier')
+const getSupplierController = require('../controller/supplier/getSupplier')
+const updateSupplier = require('../controller/supplier/updateSupplier')
+const deleteSupplier = require('../controller/supplier/deleteSupplier')
+
+
+
+
+router.post("/upload-supplier",authToken,UploadSupplierController)
+router.get("/get-supplier", authToken,getSupplierController);
+router.post("/update-supplier",authToken, updateSupplier);
+router.post("/delete-supplier",authToken, deleteSupplier);
 module.exports = router;
+
+
+
