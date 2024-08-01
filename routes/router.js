@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 // Các controller hiện tại
@@ -8,16 +9,19 @@ const userSignInController = require('../controller/user/userSignIn');
 const userDetailsController = require('../controller/user/userDetails');
 const authToken = require('../middleware/authToken');
 const userLogout = require('../controller/user/userLogout');
-const allUsers = require('../controller/user/allUsers');
+
 const updateUser = require('../controller/user/updateUser');
+const verifyEmailController = require('../controller/user/verifyEmailController');
 
 router.post("/signup", userSignUpController);
 router.post("/signin", userSignInController);
 router.get("/user-details", authToken, userDetailsController);
 router.get("/userLogout", userLogout);
 router.post("/change-password", authToken, changePasswordController);
+router.get("/verify-email", verifyEmailController);
 
 // Admin panel
+const allUsers = require('../controller/user/allUsers');
 router.get("/all-user", authToken, allUsers);
 router.post("/update-user", authToken, updateUser);
 
@@ -116,7 +120,49 @@ router.post("/upload-supplier",authToken,UploadSupplierController)
 router.get("/get-supplier", authToken,getSupplierController);
 router.post("/update-supplier",authToken, updateSupplier);
 router.post("/delete-supplier",authToken, deleteSupplier);
+// Import các controller order
+const createOrder = require('../controller/order/createOrder');
+const getAllOrders = require('../controller/order/getAllOrders');
+const getOrderById = require('../controller/order/getOrderById');
+const updateOrder = require('../controller/order/updateOrder');
+const deleteOrder = require('../controller/order/deleteOrder');
+
+// Định nghĩa các route cho order
+router.post('/createorder', authToken, createOrder);
+router.get('/allorder', authToken, getAllOrders);
+router.get('/order/:id', authToken, getOrderById);
+router.put('/order/:id', authToken, updateOrder);
+router.delete('/order/:id', authToken, deleteOrder);
+
+
+/// Import các controller voucher
+const createVoucher = require('../controller/voucher/createVoucher');
+const getAllVouchers = require('../controller/voucher/getAllVouchers');
+const getVoucherById = require('../controller/voucher/getVoucherById');
+const updateVoucher = require('../controller/voucher/updateVoucher');
+const deleteVoucher = require('../controller/voucher/deleteVoucher');
+
+// Định nghĩa các route cho voucher
+router.post('/create-voucher', authToken, createVoucher);
+router.get('/all-vouchers', authToken, getAllVouchers);
+router.get('/voucher/:id', authToken, getVoucherById);
+router.put('/voucher/:id', authToken, updateVoucher);
+router.delete('/voucher/:id', authToken, deleteVoucher);
+
+
+
+// Import các controller
+const createFlashSale = require('../controller/flashSale/createFlashSale');
+const getAllFlashSales = require('../controller/flashSale/getAllFlashSales');
+const getFlashSaleById = require('../controller/flashSale/getFlashSaleById');
+const updateFlashSale = require('../controller/flashSale/updateFlashSale');
+const deleteFlashSale = require('../controller/flashSale/deleteFlashSale');
+
+// Định nghĩa các route cho FlashSale
+router.post('/create-flash-sale', authToken, createFlashSale);
+router.get('/all-flash-sales', authToken, getAllFlashSales);
+router.get('/flash-sale/:id', authToken, getFlashSaleById);
+router.put('/flash-sale/:id', authToken, updateFlashSale);
+router.delete('/flash-sale/:id', authToken, deleteFlashSale);
+
 module.exports = router;
-
-
-

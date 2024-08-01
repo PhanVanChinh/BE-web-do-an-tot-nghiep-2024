@@ -10,7 +10,11 @@ const userSchema = new mongoose.Schema({
     password: String,
     profilePic: String,
     role: String,
-    addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'AddressDelivery' }], 
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'AddressDelivery' }],
     orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order'}]
 }, {
     timestamps: true
