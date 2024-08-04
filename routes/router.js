@@ -1,13 +1,15 @@
 const express = require('express');
+const isAdmin = require('../middleware/isAdmin');
+const authToken = require('../middleware/authToken');
 
 const router = express.Router();
 
 // Các controller hiện tại
+router.use(authToken);
 const changePasswordController = require('../controller/user/changePassword');
 const userSignUpController = require("../controller/user/userSignUp");
 const userSignInController = require('../controller/user/userSignIn');
 const userDetailsController = require('../controller/user/userDetails');
-const authToken = require('../middleware/authToken');
 const userLogout = require('../controller/user/userLogout');
 
 const updateUser = require('../controller/user/updateUser');
@@ -47,18 +49,51 @@ router.post('/get-product-by-id/', authToken, getProductById);
 // Category
 const getCategoryProduct = require('../controller/category/getCategoryProductOne');
 const getCategoryWiseProduct = require('../controller/category/getCategoryWiseProduct');
+
+const createCategory = require('../controller/category/createCategory');
+const getAllCategories = require('../controller/category/getAllCategories');
+const getCategoryById = require('../controller/category/getCategoryById');
+const updateCategory = require('../controller/category/updateCategory');
 const deleteCategory = require('../controller/category/deleteCategory');
+const updateCategoryPositions = require('../controller/category/updateCategoryPositions');
+const updateCategoryStatus = require('../controller/category/updateCategoryStatus');
+
+
+
+
+// Create a new category (chỉ admin mới có thể thực hiện)
+router.post('/categories', isAdmin, createCategory);
+
+// Get all categories (có thể công khai hoặc chỉ admin)
+router.get('/categories', getAllCategories);
+
+// Get a category by ID (có thể công khai hoặc chỉ admin)
+router.get('/categories/:id', getCategoryById);
+
+// Update a category by ID (chỉ admin mới có thể thực hiện)
+router.put('/categories/:id', isAdmin, updateCategory);
+
+// Delete a category by ID (chỉ admin mới có thể thực hiện)
+router.delete('/categories/:id', isAdmin, deleteCategory);
+
+// Update category positions (chỉ admin mới có thể thực hiện)
+router.put('/categories/updatePositions', isAdmin, updateCategoryPositions);
+
+// Update category status (chỉ admin mới có thể thực hiện)
+router.put('/categories/:id/status', isAdmin, updateCategoryStatus);
+
+
 
 router.get("/get-categoryProduct", getCategoryProduct);
 router.post("/category-product", getCategoryWiseProduct);
-router.post("/delete-category", deleteCategory); // Thêm route này
+
 
 // User add to cart
-const addToCartController = require('../controller/user/addToCartController');
-const countAddToCartProduct = require('../controller/user/countAddToCartProduct');
-const addToCartViewProduct = require('../controller/user/addToCartViewProduct');
-const updateAddToCartProduct = require('../controller/user/updateAddToCartProduct');
-const deleteAddToCartProduct = require('../controller/user/deleteAddToCartProduct');
+const addToCartController = require('../controller/carts/addToCartController');
+const countAddToCartProduct = require('../controller/carts/countAddToCartProduct');
+const addToCartViewProduct = require('../controller/carts/addToCartViewProduct');
+const updateAddToCartProduct = require('../controller/carts/updateAddToCartProduct');
+const deleteAddToCartProduct = require('../controller/carts/deleteAddToCartProduct');
 
 router.post("/addtocart", authToken, addToCartController);
 router.get("/countAddToCartProduct", authToken, countAddToCartProduct);
@@ -164,5 +199,8 @@ router.get('/all-flash-sales', authToken, getAllFlashSales);
 router.get('/flash-sale/:id', authToken, getFlashSaleById);
 router.put('/flash-sale/:id', authToken, updateFlashSale);
 router.delete('/flash-sale/:id', authToken, deleteFlashSale);
+
+
+
 
 module.exports = router;
