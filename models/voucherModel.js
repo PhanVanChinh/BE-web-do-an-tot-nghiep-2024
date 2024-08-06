@@ -9,7 +9,7 @@ const voucherSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ['percentage', 'fixed'], // Chỉ chấp nhận 'percentage' hoặc 'fixed'
+    enum: ['percentage', 'fixed'], 
     required: true,
   },
   discount_amount: {
@@ -18,7 +18,7 @@ const voucherSchema = new Schema({
   },
   discount_type: {
     type: String,
-    enum: ['percent', 'fixed'], // Chỉ chấp nhận 'percent' hoặc 'fixed'
+    enum: ['percent', 'fixed'], 
     required: true,
   },
   start_date: {

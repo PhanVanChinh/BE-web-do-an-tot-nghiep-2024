@@ -9,7 +9,7 @@ const uploadWarehouse = async (req, res) => {
             throw new Error("Permission denied");
         }
 
-        // Lưu mục nhập vào cơ sở dữ liệu
+       
         const uploadItem = new warehouseModel(req.body);
         const savedItem = await uploadItem.save();
 

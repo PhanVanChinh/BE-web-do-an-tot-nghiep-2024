@@ -7,7 +7,7 @@ const deleteImportOrder = async (req, res) => {
     try {
         console.log(`Received request to delete order with ID: ${orderId}`);
 
-        // Xóa đơn hàng
+       
         const deleteResult = await importOrderModel.findByIdAndDelete(orderId);
         console.log(`Delete result: ${JSON.stringify(deleteResult)}`);
 
@@ -16,7 +16,6 @@ const deleteImportOrder = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng' });
         }
 
-        // Xóa đơn hàng khỏi nhà cung cấp
         const updateResult = await supplierModel.updateMany(
             { orders: orderId },
             { $pull: { orders: orderId } }

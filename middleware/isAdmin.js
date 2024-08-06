@@ -1,8 +1,8 @@
-const User = require('../models/userModel'); // Import model User nếu cần
+const User = require('../models/userModel'); 
 
 async function isAdmin(req, res, next) {
     try {
-        const userId = req.userId; // Lấy userId từ middleware authToken
+        const userId = req.userId; 
         
         if (!userId) {
             return res.status(401).json({
@@ -21,7 +21,7 @@ async function isAdmin(req, res, next) {
             });
         }
 
-        if (user.role !== 'ADMIN') { // Kiểm tra nếu role của user không phải là admin
+        if (user.role !== 'ADMIN') { 
             return res.status(403).json({
                 message: "Access denied",
                 error: true,

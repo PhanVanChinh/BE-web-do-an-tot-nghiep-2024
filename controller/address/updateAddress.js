@@ -4,7 +4,7 @@ const updateAddress = async (req, res) => {
     try {
         const { addressId, recipientName, address, phoneNumber } = req.body;
 
-        // Kiểm tra dữ liệu hợp lệ
+        
         if (!addressId || !recipientName || !address || !phoneNumber) {
             return res.status(400).json({
                 message: "All fields (addressId, recipientName, address, phoneNumber) are required",
@@ -12,18 +12,18 @@ const updateAddress = async (req, res) => {
             });
         }
 
-        // Tạo đối tượng payload từ dữ liệu mới cần cập nhật
+       
         const payload = {
             recipientName,
             address,
             phoneNumber
         };
 
-        // Cập nhật địa chỉ dựa trên addressId
+        
         const updatedAddress = await AddressDelivery.findByIdAndUpdate(
             addressId,
             payload,
-            { new: true } // Trả về đối tượng đã được cập nhật
+            { new: true } 
         );
 
         if (!updatedAddress) {

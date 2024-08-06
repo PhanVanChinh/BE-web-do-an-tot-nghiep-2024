@@ -3,9 +3,9 @@ const SupplierModel = require('../../models/supplierModel');
 
 const getProductsBySupplier = async (req, res) => {
     try {
-        const { supplierId } = req.body; // Lấy supplierId từ body
+        const { supplierId } = req.body; 
 
-        // Tìm nhà cung cấp dựa trên ID
+        
         const supplier = await SupplierModel.findById(supplierId);
 
         if (!supplier) {
@@ -16,13 +16,13 @@ const getProductsBySupplier = async (req, res) => {
             });
         }
 
-        // Lấy danh sách các ID sản phẩm từ nhà cung cấp
+        
         const productIds = supplier.productsSupplied;
 
-        // Khởi tạo mảng để lưu trữ các sản phẩm
+        
         let products = [];
 
-        // Lặp qua từng ID sản phẩm và lấy thông tin sản phẩm tương ứng
+       
         for (const productId of productIds) {
             const product = await ProductModel.findById(productId);
             if (product) {

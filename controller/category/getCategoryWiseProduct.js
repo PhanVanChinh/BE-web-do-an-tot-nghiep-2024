@@ -2,8 +2,7 @@ const productModel = require("../../models/productModel")
 
 const getCategoryWiseProduct = async(req,res)=>{
     try{
-        // Nếu yêu cầu HTTP là POST, dữ liệu thường được gửi qua req.body.
-        // Nếu yêu cầu HTTP là GET, dữ liệu thường được gửi qua req.query.
+        
         const { category } = req?.body || req?.query
         const product = await productModel.find({ category })
 

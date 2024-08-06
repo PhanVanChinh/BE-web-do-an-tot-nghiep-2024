@@ -2,7 +2,7 @@ const checkPasswordImportOrder = async (req, res) => {
     const { confirmationCode } = req.body;
 
     try {
-        const defaultConfirmationCode = '0987'; // Mã xác nhận mặc định của bạn
+        const defaultConfirmationCode = '0987'; 
         if (confirmationCode === defaultConfirmationCode) {
             res.json({ success: true, message: 'Mã xác nhận đúng' });
         } else {

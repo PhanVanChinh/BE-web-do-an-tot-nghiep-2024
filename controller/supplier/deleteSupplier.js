@@ -9,20 +9,20 @@ async function deleteSupplier(req, res) {
         return res.status(400).json({ message: 'Invalid request' });
     }
     try {
-        // Xóa nhà cung cấp
+       
         const supplier = await Supplier.findByIdAndDelete(id);
 
         if (!supplier) {
             return res.status(404).json({ message: 'Supplier not found' });
         }
 
-        // Xóa nhà cung cấp khỏi các sản phẩm liên quan
+   
         await Product.updateMany(
             { suppliers: id },
             { $pull: { suppliers: id } }
         );
 
-        // Xóa nhà cung cấp khỏi các đơn hàng nhập khẩu liên quan
+      
         await ImportOrder.updateMany(
             { supplier: id },
             { $pull: { supplier: id } }

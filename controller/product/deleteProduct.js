@@ -5,11 +5,11 @@ const deleteProduct = async (req, res) => {
     try {
         const productId = req.body._id;
 
-        // Tìm và xóa sản phẩm
+        
         const deleteResult = await productModel.deleteOne({ _id: productId });
 
         if (deleteResult.deletedCount === 1) {
-            // Cập nhật thông tin sản phẩm trong mảng productsSupplied của tất cả các nhà cung cấp
+         
             await supplierModel.updateMany(
                 { productsSupplied: productId },
                 { $pull: { productsSupplied: productId } }

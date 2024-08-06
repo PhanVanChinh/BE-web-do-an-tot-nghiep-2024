@@ -5,7 +5,7 @@ const UploadAddress = async (req, res) => {
     try {
         const { user, recipientName, address, phoneNumber } = req.body;
 
-        // Kiểm tra dữ liệu hợp lệ
+       
         if (!user || !recipientName || !address || !phoneNumber) {
             return res.status(400).json({
                 message: "All fields are required",
@@ -13,13 +13,13 @@ const UploadAddress = async (req, res) => {
             });
         }
 
-        // Tạo địa chỉ mới từ dữ liệu được gửi lên
+       
         const newAddress = new AddressDelivery({ user, recipientName, address, phoneNumber });
 
-        // Lưu địa chỉ mới vào cơ sở dữ liệu
+      
         const savedAddress = await newAddress.save();
 
-        // Cập nhật user bằng cách thêm địa chỉ mới vào danh sách addresses
+       
         await User.findByIdAndUpdate(
             user, 
             { $push: { addresses: savedAddress._id } },

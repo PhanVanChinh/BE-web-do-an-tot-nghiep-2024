@@ -10,14 +10,14 @@ const uploadProduct = async (req, res) => {
             throw new Error("Permission denied");
         }
 
-        // Lưu sản phẩm vào cơ sở dữ liệu
+       
         const uploadProduct = new productModel(req.body);
         const saveProduct = await uploadProduct.save();
 
-        // Lấy _id của sản phẩm vừa lưu
+       
         const productId = saveProduct._id;
 
-        // Thêm _id của sản phẩm vào danh sách productsSupplied của các nhà cung cấp
+        
         await supplierModel.updateMany(
             { _id: { $in: req.body.suppliers} },
             { $push: { productsSupplied:  productId } }

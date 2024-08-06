@@ -1,7 +1,7 @@
 const getProductById = async (req, res) => {
     try {
-        const productId = req.params.productId; // Lấy ID sản phẩm từ URL params
-        const product = await productModel.findById(productId); // Tìm sản phẩm trong database dựa trên ID
+        const productId = req.params.productId; 
+        const product = await productModel.findById(productId); 
         if (!product) {
             return res.status(404).json({
                 success: false,
@@ -9,14 +9,14 @@ const getProductById = async (req, res) => {
                 message: "Product not found"
             });
         }
-        // Nếu sản phẩm được tìm thấy, trả về thông tin của sản phẩm
+        
         return res.json({
             success: true,
             error: false,
             data: product
         });
     } catch (error) {
-        // Xử lý lỗi nếu có bất kỳ lỗi nào xảy ra trong quá trình tìm kiếm sản phẩm
+        
         console.error("Error while fetching product by ID:", error);
         return res.status(500).json({
             success: false,

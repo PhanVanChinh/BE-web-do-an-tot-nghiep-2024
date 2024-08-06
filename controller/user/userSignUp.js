@@ -40,10 +40,10 @@ async function userSignUpController(req, res) {
         const userData = new userModel(payload);
         const saveUser = await userData.save();
 
-        // Tạo token xác minh
+        
         const token = jwt.sign({ email: saveUser.email }, process.env.TOKEN_SECRET_KEY, { expiresIn: '1h' });
 
-        // Gửi email xác minh
+       
         const verifyUrl = `http://localhost:4000/api/users/verify-email?token=${token}`;
         const mailOptions = {
             from: process.env.EMAIL_USER,

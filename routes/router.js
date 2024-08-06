@@ -4,30 +4,31 @@ const authToken = require('../middleware/authToken');
 
 const router = express.Router();
 
-// Các controller hiện tại
+
 router.use(authToken);
+
+// User controllers
 const changePasswordController = require('../controller/user/changePassword');
 const userSignUpController = require("../controller/user/userSignUp");
 const userSignInController = require('../controller/user/userSignIn');
 const userDetailsController = require('../controller/user/userDetails');
 const userLogout = require('../controller/user/userLogout');
-
 const updateUser = require('../controller/user/updateUser');
 const verifyEmailController = require('../controller/user/verifyEmailController');
+const allUsers = require('../controller/user/allUsers');
 
 router.post("/signup", userSignUpController);
 router.post("/signin", userSignInController);
-router.get("/user-details", authToken, userDetailsController);
+router.get("/user-details", userDetailsController);
 router.get("/userLogout", userLogout);
-router.post("/change-password", authToken, changePasswordController);
+router.post("/change-password", changePasswordController);
 router.get("/verify-email", verifyEmailController);
 
-// Admin panel
-const allUsers = require('../controller/user/allUsers');
-router.get("/all-user", authToken, allUsers);
-router.post("/update-user", authToken, updateUser);
+// Admin routes for users
+router.get("/all-user", isAdmin, allUsers);
+router.post("/update-user", updateUser);
 
-// Product
+// Product controllers
 const uploadProduct = require('../controller/product/uploadProduct');
 const getProduct = require('../controller/product/getProduct');
 const updateProduct = require('../controller/product/updateProduct');
@@ -37,19 +38,16 @@ const deleteProduct = require('../controller/product/deleteProduct');
 const getProductById = require('../helpers/getProductById');
 const getProductDetails = require('../controller/product/getProductDetails');
 
-router.post("/upload-product", authToken, uploadProduct);
+router.post("/upload-product", isAdmin, uploadProduct);
 router.get("/get-product", getProduct);
-router.post("/update-product", authToken, updateProduct);
+router.post("/update-product", isAdmin, updateProduct);
 router.get("/search", searchProduct);
 router.post("/filter-product", filterProduct);
-router.post('/delete-product', authToken, deleteProduct);
+router.post('/delete-product', isAdmin, deleteProduct);
 router.post("/product-details", getProductDetails);
-router.post('/get-product-by-id/', authToken, getProductById);
+router.post('/get-product-by-id/', getProductById);
 
-// Category
-const getCategoryProduct = require('../controller/category/getCategoryProductOne');
-const getCategoryWiseProduct = require('../controller/category/getCategoryWiseProduct');
-
+// Category controllers
 const createCategory = require('../controller/category/createCategory');
 const getAllCategories = require('../controller/category/getAllCategories');
 const getCategoryById = require('../controller/category/getCategoryById');
@@ -57,150 +55,117 @@ const updateCategory = require('../controller/category/updateCategory');
 const deleteCategory = require('../controller/category/deleteCategory');
 const updateCategoryPositions = require('../controller/category/updateCategoryPositions');
 const updateCategoryStatus = require('../controller/category/updateCategoryStatus');
+const getCategoryProduct = require('../controller/category/getCategoryProductOne');
+const getCategoryWiseProduct = require('../controller/category/getCategoryWiseProduct');
 
-
-
-
-// Create a new category (chỉ admin mới có thể thực hiện)
 router.post('/categories', isAdmin, createCategory);
-
-// Get all categories (có thể công khai hoặc chỉ admin)
 router.get('/categories', getAllCategories);
-
-// Get a category by ID (có thể công khai hoặc chỉ admin)
 router.get('/categories/:id', getCategoryById);
-
-// Update a category by ID (chỉ admin mới có thể thực hiện)
 router.put('/categories/:id', isAdmin, updateCategory);
-
-// Delete a category by ID (chỉ admin mới có thể thực hiện)
 router.delete('/categories/:id', isAdmin, deleteCategory);
-
-// Update category positions (chỉ admin mới có thể thực hiện)
 router.put('/categories/updatePositions', isAdmin, updateCategoryPositions);
-
-// Update category status (chỉ admin mới có thể thực hiện)
 router.put('/categories/:id/status', isAdmin, updateCategoryStatus);
-
-
-
 router.get("/get-categoryProduct", getCategoryProduct);
 router.post("/category-product", getCategoryWiseProduct);
 
-
-// User add to cart
+// Cart controllers
 const addToCartController = require('../controller/carts/addToCartController');
 const countAddToCartProduct = require('../controller/carts/countAddToCartProduct');
 const addToCartViewProduct = require('../controller/carts/addToCartViewProduct');
 const updateAddToCartProduct = require('../controller/carts/updateAddToCartProduct');
 const deleteAddToCartProduct = require('../controller/carts/deleteAddToCartProduct');
 
-router.post("/addtocart", authToken, addToCartController);
-router.get("/countAddToCartProduct", authToken, countAddToCartProduct);
-router.get("/view-card-product", authToken, addToCartViewProduct);
-router.post("/update-cart-product", authToken, updateAddToCartProduct);
-router.post("/delete-cart-product", authToken, deleteAddToCartProduct);
+router.post("/addtocart", addToCartController);
+router.get("/countAddToCartProduct", countAddToCartProduct);
+router.get("/view-card-product", addToCartViewProduct);
+router.post("/update-cart-product", updateAddToCartProduct);
+router.post("/delete-cart-product", deleteAddToCartProduct);
 
-// Warehouse
-const updateWarehouse = require('../controller/warehouse/UpdateWarehouse');
+// Warehouse controllers
+const updateWarehouse = require('../controller/warehouse/updateWarehouse');
 const uploadWarehouse = require('../controller/warehouse/uploadWarehouse');
 const getWarehouse = require('../controller/warehouse/getWarehouse');
+const deleteWarehouse = require('../controller/warehouse/deleteWarehouse');
 
-router.post('/upload-warehouse', authToken, uploadWarehouse);
-router.get('/get-warehouse', authToken, getWarehouse);
-router.post('/update-warehouse', authToken, updateWarehouse);
+router.post('/upload-warehouse', isAdmin, uploadWarehouse);
+router.get('/get-warehouse', getWarehouse);
+router.post('/update-warehouse', isAdmin, updateWarehouse);
+router.delete('/delete-warehouse/:id', isAdmin, deleteWarehouse);
 
-// Address
+// Address controllers
 const getAddressById = require('../helpers/getAddressById');
 const UploadAddress = require('../controller/address/uploadAddress');
 const getAddress = require('../controller/address/getAddress');
 const deleteAddress = require('../controller/address/deleteAddress');
 const updateAddress = require('../controller/address/updateAddress');
 
-router.post('/upload-address-delivery', authToken, UploadAddress);
-router.get('/get-address-delivery', authToken, getAddress);
-router.post('/delete-address-delivery', authToken, deleteAddress);
-router.post("/update-address-delivery", authToken, updateAddress);
-router.post('/get-address-by-id', authToken, getAddressById);
+router.post('/upload-address-delivery', UploadAddress);
+router.get('/get-address-delivery', getAddress);
+router.post('/delete-address-delivery', deleteAddress);
+router.post("/update-address-delivery", updateAddress);
+router.post('/get-address-by-id', getAddressById);
 
-// Import Order
-const uploadImportOrder = require('../controller/importOrder/uploadImportOrder')
-const getImportOrder = require('../controller/importOrder/getImportOrder')
-const deleteImportOrder = require('../controller/importOrder/deleteImportOrder')
-const checkPasswordImportOrder = require('../controller/importOrder/checkPasswordImportOrder ')
-const updateImportOrder = require('../controller/importOrder/updateImportOrder')
+// Import Order controllers
+const uploadImportOrder = require('../controller/importOrder/uploadImportOrder');
+const getImportOrder = require('../controller/importOrder/getImportOrder');
+const deleteImportOrder = require('../controller/importOrder/deleteImportOrder');
+const checkPasswordImportOrder = require('../controller/importOrder/checkPasswordImportOrder');
+const updateImportOrder = require('../controller/importOrder/updateImportOrder');
 
+router.post("/upload-importOrder", isAdmin, uploadImportOrder);
+router.get('/get-importOrder', getImportOrder);
+router.post('/delete-importOrder', isAdmin, deleteImportOrder);
+router.post('/check-password-import-order', checkPasswordImportOrder);
+router.post('/update-importOrder', isAdmin, updateImportOrder);
 
-router.post("/upload-importOrder",authToken,uploadImportOrder)
-router.get('/get-importOrder', authToken,getImportOrder)
+// Supplier controllers
+const UploadSupplierController = require('../controller/supplier/uploadSupplier');
+const getSupplierController = require('../controller/supplier/getSupplier');
+const updateSupplier = require('../controller/supplier/updateSupplier');
+const deleteSupplier = require('../controller/supplier/deleteSupplier');
 
-router.post('/delete-importOrder', deleteImportOrder)
-router.post('/check-password-import-order', checkPasswordImportOrder)
-router.post('/update-importOrder', updateImportOrder)
+router.post("/upload-supplier", isAdmin, UploadSupplierController);
+router.get("/get-supplier", getSupplierController);
+router.post("/update-supplier", isAdmin, updateSupplier);
+router.post("/delete-supplier", isAdmin, deleteSupplier);
 
-
-
-
-
-// Supplier
-const UploadSupplierController = require('../controller/supplier/uploadSupplier')
-const getSupplierController = require('../controller/supplier/getSupplier')
-const updateSupplier = require('../controller/supplier/updateSupplier')
-const deleteSupplier = require('../controller/supplier/deleteSupplier')
-
-
-
-
-router.post("/upload-supplier",authToken,UploadSupplierController)
-router.get("/get-supplier", authToken,getSupplierController);
-router.post("/update-supplier",authToken, updateSupplier);
-router.post("/delete-supplier",authToken, deleteSupplier);
-// Import các controller order
+// Order controllers
 const createOrder = require('../controller/order/createOrder');
 const getAllOrders = require('../controller/order/getAllOrders');
 const getOrderById = require('../controller/order/getOrderById');
 const updateOrder = require('../controller/order/updateOrder');
 const deleteOrder = require('../controller/order/deleteOrder');
 
-// Định nghĩa các route cho order
-router.post('/createorder', authToken, createOrder);
-router.get('/allorder', authToken, getAllOrders);
-router.get('/order/:id', authToken, getOrderById);
-router.put('/order/:id', authToken, updateOrder);
-router.delete('/order/:id', authToken, deleteOrder);
+router.post('/createorder', createOrder);
+router.get('/allorder', isAdmin, getAllOrders);
+router.get('/order/:id', getOrderById);
+router.put('/order/:id', updateOrder);
+router.delete('/order/:id', deleteOrder);
 
-
-/// Import các controller voucher
+// Voucher controllers
 const createVoucher = require('../controller/voucher/createVoucher');
 const getAllVouchers = require('../controller/voucher/getAllVouchers');
 const getVoucherById = require('../controller/voucher/getVoucherById');
 const updateVoucher = require('../controller/voucher/updateVoucher');
 const deleteVoucher = require('../controller/voucher/deleteVoucher');
 
-// Định nghĩa các route cho voucher
-router.post('/create-voucher', authToken, createVoucher);
-router.get('/all-vouchers', authToken, getAllVouchers);
-router.get('/voucher/:id', authToken, getVoucherById);
-router.put('/voucher/:id', authToken, updateVoucher);
-router.delete('/voucher/:id', authToken, deleteVoucher);
+router.post('/create-voucher', isAdmin, createVoucher);
+router.get('/all-vouchers', getAllVouchers);
+router.get('/voucher/:id', getVoucherById);
+router.put('/voucher/:id', isAdmin, updateVoucher);
+router.delete('/voucher/:id', isAdmin, deleteVoucher);
 
-
-
-// Import các controller
+// Flash Sale controllers
 const createFlashSale = require('../controller/flashSale/createFlashSale');
 const getAllFlashSales = require('../controller/flashSale/getAllFlashSales');
 const getFlashSaleById = require('../controller/flashSale/getFlashSaleById');
 const updateFlashSale = require('../controller/flashSale/updateFlashSale');
 const deleteFlashSale = require('../controller/flashSale/deleteFlashSale');
 
-// Định nghĩa các route cho FlashSale
-router.post('/create-flash-sale', authToken, createFlashSale);
-router.get('/all-flash-sales', authToken, getAllFlashSales);
-router.get('/flash-sale/:id', authToken, getFlashSaleById);
-router.put('/flash-sale/:id', authToken, updateFlashSale);
-router.delete('/flash-sale/:id', authToken, deleteFlashSale);
-
-
-
+router.post('/create-flash-sale', isAdmin, createFlashSale);
+router.get('/all-flash-sales', getAllFlashSales);
+router.get('/flash-sale/:id', getFlashSaleById);
+router.put('/flash-sale/:id', isAdmin, updateFlashSale);
+router.delete('/flash-sale/:id', isAdmin, deleteFlashSale);
 
 module.exports = router;

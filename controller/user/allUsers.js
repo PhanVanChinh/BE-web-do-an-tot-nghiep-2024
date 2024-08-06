@@ -4,7 +4,7 @@ async function allUsers(req,res){
     try{
         console.log("userid all Users",req.userId)
 
-        // Tim kiem tat ca user
+       
         const allUsers = await userModel.find()
         
         res.json({

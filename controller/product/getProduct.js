@@ -2,7 +2,7 @@ const productModel = require("../../models/productModel")
 
 const getProduct = async(req,res)=>{
     try{
-        // sap xep theo thu tu giam dan
+      
         const allProduct = await productModel.find().sort({ createdAt : -1 })
         console.log('all product', allProduct);
 

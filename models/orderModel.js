@@ -12,7 +12,7 @@ const orderSchema = new mongoose.Schema({
     status: { 
         type: String, 
         enum: ['Đang xử lý', 'Đã giao hàng', 'Đã hủy', 'Đặt hàng thành công', 'Chuyển khoản thành công', 'Đang giao hàng'],
-        default: 'Đang xử lý' // Giá trị mặc định khi tạo mới đơn hàng
+        default: 'Đang xử lý' 
     },
     paymentMethod: { 
         type: String, 
@@ -30,13 +30,13 @@ orderSchema.pre('save', function(next) {
     if (this.isModified('status')) {
         const status = this.status;
         if (status === 'Đặt hàng thành công') {
-            // Xử lý khi đặt hàng thành công (thanh toán tiền mặt)
+          
             this.processingAt = new Date();
         } else if (status === 'Chuyển khoản thành công') {
-            // Xử lý khi chuyển khoản thành công (thanh toán online)
+           
             this.processingAt = new Date();
         } else if (status === 'Đang giao hàng') {
-            // Đánh dấu khi đơn hàng đang được giao
+            
             this.shippedAt = new Date();
         } else if (status === 'Đã hủy') {
             this.cancelledAt = new Date();
