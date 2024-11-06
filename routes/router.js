@@ -5,7 +5,7 @@ const authToken = require('../middleware/authToken');
 const router = express.Router();
 
 
-router.use(authToken);
+// router.use(authToken);
 
 // User controllers
 const changePasswordController = require('../controller/user/changePassword');
@@ -80,6 +80,32 @@ router.get('/get-address-delivery', getAddress);
 router.post('/delete-address-delivery', deleteAddress);
 router.post("/update-address-delivery", updateAddress);
 router.post('/get-address-by-id', getAddressById);
+
+// Cart controllers
+const addToCartController = require('../controller/carts/addToCartController');
+const countAddToCartProduct = require('../controller/carts/countAddToCartProduct');
+const addToCartViewProduct = require('../controller/carts/addToCartViewProduct');
+const updateAddToCartProduct = require('../controller/carts/updateAddToCartProduct');
+const deleteAddToCartProduct = require('../controller/carts/deleteAddToCartProduct');
+
+router.post("/addtocart", addToCartController);
+router.get("/countAddToCartProduct", countAddToCartProduct);
+router.get("/view-card-product", addToCartViewProduct);
+router.post("/update-cart-product", updateAddToCartProduct);
+router.post("/delete-cart-product", deleteAddToCartProduct);
+
+// Order controllers
+const createOrder = require('../controller/order/createOrder');
+const getAllOrders = require('../controller/order/getAllOrders');
+const getOrderById = require('../controller/order/getOrderById');
+const updateOrder = require('../controller/order/updateOrder');
+const deleteOrder = require('../controller/order/deleteOrder');
+
+router.post('/createorder', createOrder);
+router.get('/allorder', isAdmin, getAllOrders);
+router.get('/order/:id', getOrderById);
+router.put('/order/:id', updateOrder);
+router.delete('/order/:id', deleteOrder);
 
 
 module.exports = router;
